@@ -55,6 +55,9 @@ public class Messages {
         return builder.toString();
     }
 
+    /**
+     * Formats the {@code activity} for display to the user.
+     */
     public static String format(Activity activity) {
         final StringBuilder builder = new StringBuilder();
         builder.append(activity.getDescription())

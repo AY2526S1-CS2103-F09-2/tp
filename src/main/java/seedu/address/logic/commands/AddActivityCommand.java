@@ -5,8 +5,11 @@ import static java.util.Objects.requireNonNull;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.schedule.Activity;;
+import seedu.address.model.schedule.Activity;
 
+/**
+ * Adds an Activity to Schedule.
+ */
 public class AddActivityCommand extends Command {
     public static final String COMMAND_WORD = "addactivity";
 

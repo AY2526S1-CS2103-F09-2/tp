@@ -9,7 +9,7 @@ import seedu.address.model.Model;
 /**
  * Sorts and lists all tutee in the address book by the date and time of their class.
  */
-public class SortCommand extends Command{
+public class SortCommand extends Command {
 
     public static final String COMMAND_WORD = "sortbydate";
 
