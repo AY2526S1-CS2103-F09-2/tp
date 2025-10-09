@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 import seedu.address.logic.parser.Prefix;
 import seedu.address.model.person.Person;
+import seedu.address.model.schedule.Activity;
 
 /**
  * Container for user visible messages.
@@ -51,6 +52,18 @@ public class Messages {
         person.getTags().forEach(builder::append);
         builder.append("; Billing Contacts: ");
         person.getContacts().forEach(builder::append);
+        return builder.toString();
+    }
+
+    public static String format(Activity activity) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(activity.getDescription())
+                .append("; Day:  ")
+                .append(activity.getDay())
+                .append("; Start time: ")
+                .append(activity.getStartTime())
+                .append("; End time: ")
+                .append(activity.getEndTime());
         return builder.toString();
     }
 
