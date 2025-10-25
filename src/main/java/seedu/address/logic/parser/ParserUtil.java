@@ -231,7 +231,11 @@ public class ParserUtil {
         return new Timeslot(trimmedTimeslot);
     }
 
-    public static Remark parseRemark(String remark) throws ParseException {
+    /**
+     * Parses a {@code String remark} into a {@code Remark}.
+     * Leading and trailing whitespaces will be trimmed.
+     */
+    public static Remark parseRemark(String remark) {
         requireNonNull(remark);
         if (remark.trim().isEmpty()) {
             return new Remark("NIL");

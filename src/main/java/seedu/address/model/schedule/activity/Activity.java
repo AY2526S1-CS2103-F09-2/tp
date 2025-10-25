@@ -1,5 +1,6 @@
 package seedu.address.model.schedule.activity;
 
+import java.time.LocalTime;
 import java.util.Objects;
 
 import seedu.address.commons.util.ToStringBuilder;
@@ -35,6 +36,14 @@ public class Activity {
 
     public Timeslot getTimeslot() {
         return timeslot;
+    }
+
+    public LocalTime[] getActivityTimes() {
+        String[] activityTimesString = getTimeslot().value.split("-");
+        LocalTime[] activityTimes = new LocalTime[activityTimesString.length];
+        activityTimes[0] = LocalTime.parse(activityTimesString[0]);
+        activityTimes[1] = LocalTime.parse(activityTimesString[1]);
+        return activityTimes;
     }
 
     @Override

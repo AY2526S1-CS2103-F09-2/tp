@@ -38,8 +38,8 @@ public class TypicalPersons {
             .withEmail("heinz@example.com").withAddress("wall street").withDate("Wednesday")
             .withSlot("16:00-18:00").build();
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")
-            .withEmail("cornelia@example.com").withAddress("10th street").withRemark("Exams soon").withDate("Wednesday").withSlot("16:00-18:00")
-            .withTags("friends").build();
+            .withEmail("cornelia@example.com").withAddress("10th street").withRemark("Exams soon")
+            .withDate("Wednesday").withSlot("16:00-18:00").withTags("friends").build();
     public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("9482224")
             .withEmail("werner@example.com").withAddress("michegan ave").withDate("Wednesday").withSlot("16:00-18:00")
             .build();

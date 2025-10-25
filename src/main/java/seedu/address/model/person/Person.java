@@ -74,8 +74,10 @@ public class Person {
         return slot;
     }
 
-    public Remark getRemark() { return remark;}
-    
+    public Remark getRemark() {
+        return remark;
+    }
+
     public String getImagePath() {
         return imagePath;
     }

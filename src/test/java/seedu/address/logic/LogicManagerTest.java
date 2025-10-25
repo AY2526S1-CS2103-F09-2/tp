@@ -163,7 +163,8 @@ public class LogicManagerTest {
             }
         };
 
-        JsonScheduleStorage scheduleStorage = new JsonScheduleStorage(temporaryFolder.resolve("ExceptionUserPrefs.json"));
+        JsonScheduleStorage scheduleStorage = new JsonScheduleStorage(
+                temporaryFolder.resolve("ExceptionUserPrefs.json"));
 
         JsonUserPrefsStorage userPrefsStorage =
                 new JsonUserPrefsStorage(temporaryFolder.resolve("ExceptionUserPrefs.json"));

@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.commands.DeleteCommand.MESSAGE_TUITION_NOT_FOUND;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CONTACT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
@@ -33,6 +34,11 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.person.Remark;
 import seedu.address.model.person.TuitionDate;
 import seedu.address.model.person.TuitionSlot;
+import seedu.address.model.schedule.activity.Activity;
+import seedu.address.model.schedule.activity.Day;
+import seedu.address.model.schedule.activity.Info;
+import seedu.address.model.schedule.activity.Timeslot;
+import seedu.address.model.schedule.activity.Tuition;
 import seedu.address.model.tag.BillingContact;
 import seedu.address.model.tag.Tag;
 
@@ -53,7 +59,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_DATE + "DATE] "
             + "[" + PREFIX_SLOT + "SLOT] "
-            + "[" + PREFIX_REMARK +  "REMARK] "
+            + "[" + PREFIX_REMARK + "REMARK] "
             + "[" + PREFIX_TAG + "TAG]... "
             + "[" + PREFIX_CONTACT + "BILLING CONTACT]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
@@ -93,6 +99,23 @@ public class EditCommand extends Command {
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        }
+
+        if (!personToEdit.getDate().equals(editedPerson.getDate())
+                || !personToEdit.getSlot().equals(editedPerson.getSlot())) {
+            Activity toEdit = new Activity(new Info("to edit"), new Day(personToEdit.getDate().toString()),
+                    new Timeslot(personToEdit.getSlot().toString()));
+            Optional<Activity> activityInSchedule = model.getSameDateTimeActivity(toEdit);
+            if (activityInSchedule.isEmpty()) {
+                throw new CommandException(MESSAGE_TUITION_NOT_FOUND);
+            }
+            model.deleteActivity(activityInSchedule.get());
+            try {
+                new AddActivityCommand(new Tuition(editedPerson)).execute(model);
+            } catch (CommandException e) {
+                model.addActivity(activityInSchedule.get());
+                throw e;
+            }
         }
 
         model.setPerson(personToEdit, editedPerson);
@@ -233,9 +256,13 @@ public class EditCommand extends Command {
             return Optional.ofNullable(slot);
         }
 
-        public void setRemark(Remark remark) { this.remark = remark; }
+        public void setRemark(Remark remark) {
+            this.remark = remark;
+        }
 
-        public Optional<Remark> getRemark() { return Optional.ofNullable(remark); }
+        public Optional<Remark> getRemark() {
+            return Optional.ofNullable(remark);
+        }
 
         /**
          * Sets {@code tags} to this object's {@code tags}.

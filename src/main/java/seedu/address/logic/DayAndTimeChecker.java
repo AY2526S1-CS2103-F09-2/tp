@@ -21,20 +21,16 @@ public class DayAndTimeChecker {
      * @return true if there is no overlap, false otherwise.
      */
     public static boolean hasOverlapWithOtherActivities(Activity activity, ObservableList<Activity> activities) {
-        String[] activityTimings = activity.getTimeslot().value.split("-");
-        LocalTime startTime = LocalTime.parse(activityTimings[0]);
-        LocalTime endTime = LocalTime.parse(activityTimings[1]);
+        LocalTime[] activityTimes = activity.getActivityTimes();
         for (Activity existingActivity : activities) {
-            String[] existingActivityTimings = existingActivity.getTimeslot().value.split("-");
-            LocalTime existingStartTime = LocalTime.parse(existingActivityTimings[0]);
-            LocalTime existingEndTime = LocalTime.parse(existingActivityTimings[1]);
+            LocalTime[] existingActivityTimes = existingActivity.getActivityTimes();
             if (isNotSameDay(activity, existingActivity)) {
                 continue;
             }
-            if (isEqualOrAfter(startTime, existingEndTime)) {
+            if (isEqualOrAfter(activityTimes[0], existingActivityTimes[1])) {
                 continue;
             }
-            if (isEqualOrAfter(existingStartTime, endTime)) {
+            if (isEqualOrAfter(existingActivityTimes[0], activityTimes[1])) {
                 continue;
             }
             return true;
@@ -47,20 +43,16 @@ public class DayAndTimeChecker {
      * from the schedule, returns an {@code Optional<Empty>} otherwise.
      */
     public static Optional<Activity> getSameDateTimeActivity(Activity activity, ObservableList<Activity> activities) {
-        String[] activityTimings = activity.getTimeslot().value.split("-");
-        LocalTime startTime = LocalTime.parse(activityTimings[0]);
-        LocalTime endTime = LocalTime.parse(activityTimings[1]);
+        LocalTime[] activityTimes = activity.getActivityTimes();
         for (Activity existingActivity : activities) {
-            String[] existingActivityTimings = existingActivity.getTimeslot().value.split("-");
-            LocalTime existingStartTime = LocalTime.parse(existingActivityTimings[0]);
-            LocalTime existingEndTime = LocalTime.parse(existingActivityTimings[1]);
+            LocalTime[] existingActivityTimes = existingActivity.getActivityTimes();
             if (isNotSameDay(activity, existingActivity)) {
                 continue;
             }
-            if (!isEqual(startTime, existingStartTime)) {
+            if (!isEqual(activityTimes[0], existingActivityTimes[0])) {
                 continue;
             }
-            if (!isEqual(endTime, existingEndTime)) {
+            if (!isEqual(activityTimes[1], existingActivityTimes[1])) {
                 continue;
             }
             return Optional.of(existingActivity);

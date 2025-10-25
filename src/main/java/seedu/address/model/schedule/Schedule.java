@@ -94,7 +94,8 @@ public class Schedule implements ReadOnlySchedule {
      * The start time of the activity must be before its end time.
      * The activity must not overlap with existing activities.
      */
-    public void add(Activity toAdd) {
+    public void add(Activity toAdd) throws DuplicateActivityException, MismatchedTimeException,
+            OverlappingActivityException {
         requireNonNull(toAdd);
         if (hasActivity(toAdd)) {
             throw new DuplicateActivityException();
@@ -112,7 +113,7 @@ public class Schedule implements ReadOnlySchedule {
      * Deletes an activity from the schedule.
      * The activity must exist in the schedule.
      */
-    public void delete(Activity toDelete) {
+    public void delete(Activity toDelete) throws ActivityNotFoundException {
         requireNonNull(toDelete);
         if (!activities.remove(toDelete)) {
             throw new ActivityNotFoundException();

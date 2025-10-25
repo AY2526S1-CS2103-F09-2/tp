@@ -14,6 +14,7 @@ import seedu.address.model.schedule.activity.Activity;
 import seedu.address.model.schedule.activity.Day;
 import seedu.address.model.schedule.activity.Info;
 import seedu.address.model.schedule.activity.Timeslot;
+import seedu.address.model.schedule.activity.Tuition;
 
 /**
  * Deletes an activity identified using the day and timeslot of the activity in the schedule.
@@ -31,8 +32,10 @@ public class DeleteActivityCommand extends Command {
             + PREFIX_DATE + "friday "
             + PREFIX_SLOT + "0900-1000";
 
-    private static final String MESSAGE_DELETE_ACTIVITY_SUCCESS = "Deleted Activity: %1$s";
-    private static final String MESSAGE_ACTIVITY_NOT_FOUND = "Activity not found";
+    public static final String MESSAGE_DELETE_ACTIVITY_SUCCESS = "Deleted Activity: %1$s";
+    public static final String MESSAGE_ACTIVITY_NOT_FOUND = "Activity not found";
+    public static final String MESSAGE_ACTIVITY_IS_TUITION = "Specified date and timeslot is for a tuition"
+            + ", cannot be deleted via this command";
 
 
     private final Day day;
@@ -54,6 +57,8 @@ public class DeleteActivityCommand extends Command {
         Optional<Activity> activityInSchedule = model.getSameDateTimeActivity(toDelete);
         if (activityInSchedule.isEmpty()) {
             throw new CommandException(MESSAGE_ACTIVITY_NOT_FOUND);
+        } else if (activityInSchedule.get() instanceof Tuition) {
+            throw new CommandException(MESSAGE_ACTIVITY_IS_TUITION);
         } else {
             model.deleteActivity(activityInSchedule.get());
             return new CommandResult(String.format(MESSAGE_DELETE_ACTIVITY_SUCCESS,

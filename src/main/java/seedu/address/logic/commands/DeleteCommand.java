@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.Optional;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
@@ -10,6 +11,10 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
+import seedu.address.model.schedule.activity.Activity;
+import seedu.address.model.schedule.activity.Day;
+import seedu.address.model.schedule.activity.Info;
+import seedu.address.model.schedule.activity.Timeslot;
 
 /**
  * Deletes a person identified using it's displayed index from the address book.
@@ -24,6 +29,8 @@ public class DeleteCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
+    public static final String MESSAGE_TUITION_NOT_FOUND = "Tuition not found in schedule, "
+            + "data has been modified externally incorrectly";
 
     private final Index targetIndex;
 
@@ -41,6 +48,14 @@ public class DeleteCommand extends Command {
         }
 
         Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
+        Activity toDelete = new Activity(new Info("to delete"), new Day(personToDelete.getDate().toString()),
+                new Timeslot(personToDelete.getSlot().toString()));
+        Optional<Activity> activityInSchedule = model.getSameDateTimeActivity(toDelete);
+        if (activityInSchedule.isEmpty()) {
+            throw new CommandException(MESSAGE_TUITION_NOT_FOUND);
+        }
+
+        model.deleteActivity(activityInSchedule.get());
         model.deletePerson(personToDelete);
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
     }

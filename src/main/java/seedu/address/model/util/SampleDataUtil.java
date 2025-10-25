@@ -20,6 +20,7 @@ import seedu.address.model.schedule.activity.Activity;
 import seedu.address.model.schedule.activity.Day;
 import seedu.address.model.schedule.activity.Info;
 import seedu.address.model.schedule.activity.Timeslot;
+import seedu.address.model.schedule.activity.Tuition;
 import seedu.address.model.tag.BillingContact;
 import seedu.address.model.tag.Tag;
 
@@ -34,7 +35,7 @@ public class SampleDataUtil {
                     new TuitionSlot("16:00-18:00"), getTagSet("friends"), getContactSet("88245781"), new Remark("")),
             new Person(new Name("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
                 new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"), new TuitionDate("monday"),
-                    new TuitionSlot("13:00-21:00"), getTagSet("colleagues", "friends"),
+                    new TuitionSlot("19:00-21:00"), getTagSet("colleagues", "friends"),
                     getContactSet("88245781"), new Remark("Multiple subjects")),
             new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
                 new Address("Blk 11 Ang Mo Kio Street 74, #11-04"), new TuitionDate("tuesday"),
@@ -95,6 +96,9 @@ public class SampleDataUtil {
         Schedule sampleSchedule = new Schedule();
         for (Activity sampleActivity : getSampleActivities()) {
             sampleSchedule.add(sampleActivity);
+        }
+        for (Person samplePerson : getSamplePersons()) {
+            sampleSchedule.add(new Tuition(samplePerson));
         }
         return sampleSchedule;
     }

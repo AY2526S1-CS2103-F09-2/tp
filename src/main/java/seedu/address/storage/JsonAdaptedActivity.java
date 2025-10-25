@@ -8,6 +8,7 @@ import seedu.address.model.schedule.activity.Activity;
 import seedu.address.model.schedule.activity.Day;
 import seedu.address.model.schedule.activity.Info;
 import seedu.address.model.schedule.activity.Timeslot;
+import seedu.address.model.schedule.activity.Tuition;
 
 /**
  * Jackson-friendly version of {@link Activity}.
@@ -15,7 +16,9 @@ import seedu.address.model.schedule.activity.Timeslot;
 public class JsonAdaptedActivity {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Activity's %s field is missing!";
+    public static final String TYPE_INCORRECT_FORMAT = "Type for activity is incorrect!";
 
+    private final String type;
     private final String info;
     private final String day;
     private final String timeslot;
@@ -24,10 +27,11 @@ public class JsonAdaptedActivity {
      * Constructs a {@code JsonAdaptedActivity} with the given activity details.
      */
     @JsonCreator
-    public JsonAdaptedActivity(@JsonProperty("info") String info, @JsonProperty("day") String day,
-                               @JsonProperty("timeslot") String timeslot) {
+    public JsonAdaptedActivity(@JsonProperty("type") String type, @JsonProperty("info") String info,
+                               @JsonProperty("day") String day, @JsonProperty("timeslot") String timeslot) {
+        this.type = type;
         this.info = info;
-        this.day = day.toLowerCase();
+        this.day = day;
         this.timeslot = timeslot;
     }
 
@@ -35,6 +39,11 @@ public class JsonAdaptedActivity {
      * Constructs a given {@code Activity} into this class for Jackson use.
      */
     public JsonAdaptedActivity(Activity source) {
+        if (source instanceof Tuition) {
+            type = "tuition";
+        } else {
+            type = "activity";
+        }
         info = source.getInfo().value;
         day = source.getDay().value;
         timeslot = source.getTimeslot().value;
@@ -70,6 +79,15 @@ public class JsonAdaptedActivity {
             throw new IllegalValueException(Timeslot.MESSAGE_CONSTRAINTS);
         }
         final Timeslot modelTimeslot = new Timeslot(timeslot);
-        return new Activity(modelInfo, modelDay, modelTimeslot);
+        if (type == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "Type"));
+        }
+        if (type.equals("tuition")) {
+            return new Tuition(modelInfo, modelDay, modelTimeslot);
+        } else if (type.equals("activity")) {
+            return new Activity(modelInfo, modelDay, modelTimeslot);
+        } else {
+            throw new IllegalValueException(TYPE_INCORRECT_FORMAT);
+        }
     }
 }

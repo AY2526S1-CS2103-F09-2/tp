@@ -123,7 +123,9 @@ public class AddCommandTest {
         }
 
         @Override
-        public Path getScheduleFilePath() { throw new AssertionError("This method should not be called."); }
+        public Path getScheduleFilePath() {
+            throw new AssertionError("This method should not be called.");
+        }
 
         @Override
         public void setScheduleFilePath(Path scheduleFilePath) {
@@ -151,7 +153,9 @@ public class AddCommandTest {
         }
 
         @Override
-        public ReadOnlySchedule getSchedule() { throw new AssertionError("This method should not be called."); }
+        public ReadOnlySchedule getSchedule() {
+            throw new AssertionError("This method should not be called.");
+        }
 
         @Override
         public boolean hasPerson(Person person) {
@@ -159,7 +163,9 @@ public class AddCommandTest {
         }
 
         @Override
-        public boolean hasActivity(Activity activity) { throw new AssertionError("This method should not be called."); }
+        public boolean hasActivity(Activity activity) {
+            throw new AssertionError("This method should not be called.");
+        }
 
         @Override
         public boolean hasMismatchedTime(Activity activity) {

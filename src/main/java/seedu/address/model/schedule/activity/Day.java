@@ -35,7 +35,7 @@ public class Day {
      * Returns true if a given string is a valid day.
      */
     public static boolean isValidDay(String test) {
-        return VALIDATION_REGEX.contains(test);
+        return VALIDATION_REGEX.contains(test.toLowerCase());
     }
 
     @Override
