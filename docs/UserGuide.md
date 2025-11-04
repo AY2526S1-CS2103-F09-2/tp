@@ -18,7 +18,7 @@ Note that all contacts added to TuitionSync will automatically be taken as a tut
 
 1. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103-F09-2/tp/releases).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+1. Copy the file to the folder you want to use as the _home folder_ for TuitionSync.
 
 1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar tuitionsync.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
@@ -45,7 +45,7 @@ Note that all contacts added to TuitionSync will automatically be taken as a tut
 
 <div markdown="block" class="alert alert-info">
 
-:information_source: Notes about the command format:<br>
+**:information_source: Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
   e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
@@ -53,8 +53,8 @@ Note that all contacts added to TuitionSync will automatically be taken as a tut
 * Items in square brackets are optional.<br>
   e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
 
-* Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
+* Items with `…` after them can be used multiple times including zero times.<br>
+  e.g. `[t/TAG]…` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
@@ -130,7 +130,7 @@ Format: `delete INDEX`
 
 * Deletes the person at the specified `INDEX`.
 * The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
+* The index **must be a positive integer** 1, 2, 3, …
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
@@ -157,7 +157,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [d/DATE] [s/TIME_SL
 * When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
 * You can remove all the person’s tags by typing `t/` without
     specifying any tags after it.
-* This edit command is seperate from another edit commands which enables editing of unpaid hours (see below)
+* This edit command is seperate from another edit command which enables editing of unpaid hours (see below)
 * You can remove the billing contact by typing `b/` without specifying any number after it
 * If no billing contact is specified, the person's phone number will be used as the billing contact instead.
 
@@ -307,7 +307,7 @@ Format: `addactivity i/ACTIVITY_INFO d/DAY s/TIMESLOT`
 
 * Activity info can be no longer than 100 characters.
 * The format for the timeslot strictly follow `HH:MM-HH:MM`, it cannot extend past midnight and `00:00` is taken to be midnight of the day stated.
-* Timeslot cannot have the starting time be earlier or the same as the end time.
+* Timeslot cannot have the starting time to be the same as or later than the end time.
 * Acitivty to be added cannot clash with existing activites.
 * Day input must be the full name of the day, case-insensitive.
 
@@ -327,16 +327,18 @@ Examples:
 
 ### Saving the data
 
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+AddressBook and Schedule data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 ### Editing the data file
 
-AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+AddressBook and Schedule data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json` and `[JAR file location]/data/schedule.json` respectively. Advanced users are welcome to update data directly by editing that data file.
 
-<div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
-If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
+<div markdown="span" class="alert alert-warning">
 
-Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+:exclamation: **Caution:**
+If your changes to the data file makes its format invalid, AddressBook/Schedule will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
+
+Furthermore, certain edits can cause the AddressBook/Schedule to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </div>
 
 ### Archiving data files `[coming in v2.0]`

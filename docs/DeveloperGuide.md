@@ -58,7 +58,7 @@ The *Sequence Diagram* below shows how the components interact with each other f
 Each of the four main components (also shown in the diagram above),
 
 * defines its *API* in an `interface` with the same name as the Component.
-* implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point.
+* implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point).
 
 For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class (reason: to prevent outside component's being coupled to the implementation of a component), as illustrated in the (partial) class diagram below.
 
@@ -83,7 +83,9 @@ The `UI` component,
 * keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
 * depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The dotted arrow leading to Ui interface comes from the hidden user and does not extend out from the arrow pointing from UiManager to Logic. This confusion is due to a limitation of PlantUML.
+<div markdown="span" class="alert alert-info">
+
+:information_source: **Note:** The dotted arrow leading to Ui interface comes from the hidden user and does not extend out from the arrow pointing from UiManager to Logic. This confusion is due to a limitation of PlantUML.
 </div>
 
 ### Logic component
@@ -98,7 +100,9 @@ The sequence diagram below illustrates the interactions within the `Logic` compo
 
 ![Interactions Inside the Logic Component for the `delete 1` Command](images/DeleteSequenceDiagram.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+<div markdown="span" class="alert alert-info">
+
+:information_source: **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
 </div>
 
 How the `Logic` component works:
@@ -127,6 +131,7 @@ The `Model` component,
 
 * stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
 * stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+* stores the schedule data i.e., all `Activity` objects.
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
@@ -159,26 +164,15 @@ Given below shows the sequence diagram of how the sortbydate command goes throug
 
 ![SortSequenceDiagram](images/SortByDateSequenceDiagram-Logic.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `SortCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+<div markdown="span" class="alert alert-info">
+
+:information_source: **Note:** The lifeline for `SortCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</div>
 
 The calls to Model class shown above are shown in detail in the sequence diagram below.
 
 ![SortSequenceDiagram](images/SortByDateSequenceDiagram-Model.png)
 
-#### Design considerations:
-
-**Aspect: How undo & redo executes:**
-
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
-
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
-
-_{more aspects and alternatives to be added}_
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -216,22 +210,23 @@ _{more aspects and alternatives to be added}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                               | I want to …​                                                        | So that…​                                                            |
-|-----|---------------------------------------|---------------------------------------------------------------------|----------------------------------------------------------------------|
-| `* * *` | new user                              | see information page                                                | I can refer to instructions when I forget how to use the App         |
-| `* * *` | student                               | add my own schedule                                                 | I can account for potential timetable conflicts with my own schedule |
-| `* * *` | student                               | delete my schedule                                                  | I can free up the timeslot                                           |
-| `* * *` | tuition teacher                       | add a tutee’s data                                                  |                                                                      |
-| `* * *` | tuition teacher                       | delete a tutee's data                                               |                                                                      |
-| `* * *` | tuition teacher                       | get the emails of all my current tutees                             | I can email them their homework for the week                         |
-| `* * *` | tuition teacher                       | get the billing contact of all my current tutees                    | I can contact them about payment                                     |
-| `* * *` | tuition teacher                       | get the address of my tutee                                         | I can proceed to the location for the lesson                         |
-| `* * *` | tuition teacher                       | sort the list of tutees according to date of lesson                 | I can see more easily who I am teaching next                         |
-| `* *` | tuition teacher                       | get the amount each tutee owes                                      | I know how much I should be getting                                  |
-| `* *` | tuition teacher                       | leave notes on what my tutee is weak in                             | I know how to help them more                                         |
-| `* *` | tuition teacher and part-time student | have a daily overview of my activities for the day                  | I know and can prepare for my day efficiently                        |
-| `*` | tuition teacher | get suggested time slots for new tutees based on lesson date and duration | I can slot in new tutees more easily                                 |
-| `*` | expert user                           | create shortcuts for tasks                                          | I can save time on frequently performed tasks                        |
+| Priority | As a …​                               | I want to …​                                                              | So that…​                                                      |
+|-----|---------------------------------------|---------------------------------------------------------------------------|----------------------------------------------------------------|
+| `* * *` | new user                              | see information page                                                      | I can refer to instructions when I forget how to use the App   |
+| `* * *` | student                               | add my own activities                                                     | I can account for potential timetable conflicts in my schedule |
+| `* * *` | student                               | delete my activities                                                      | I can free up the timeslot                                     |
+| `* * *` | tuition teacher                       | add a tutee’s data                                                        |                                                                |
+| `* * *` | tuition teacher                       | delete a tutee's data                                                     |                                                                |
+| `* * *` | tuition teacher                       | get the email of my tutee                                                 | I can email them their homework for the week                   |
+| `* * *` | tuition teacher                       | get the billing contact of my tutee                                       | I can contact them about payment                               |
+| `* * *` | tuition teacher                       | get the address of my tutee                                               | I can proceed to the location for the lesson                   |
+| `* * *` | tuition teacher                       | sort the list of tutees according to date of lesson                       | I can see more easily who I am teaching next                   |
+| `* *` | tuition teacher                       | edit the number of unpaid hours for a tutee                               | I know the number of unpaid hours                              |
+| `* *` | tuition teacher                       | get the amount each tutee owes                                            | I know how much I should be getting                            |
+| `* *` | tuition teacher                       | leave notes on what my tutee is weak in                                   | I know how to help them more                                   |
+| `* *` | tuition teacher and part-time student | have a daily overview of my activities for the day                        | I know and can prepare for my day efficiently                  |
+| `*` | tuition teacher                       | get suggested time slots for new tutees based on lesson date and duration | I can slot in new tutees more easily                           |
+| `*` | expert user                           | create shortcuts for tasks                                                | I can save time on frequently performed tasks                  |
 
 
 ### Use cases
@@ -243,7 +238,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **MSS**
 
 1. User enters details for the new tutee.
-2. TuitionSync adds the tutee.
+2. TuitionSync adds the tuition to schedule.
+3. TuitionSync adds the tutee to address book.
 
     Use case ends.
 
@@ -259,13 +255,18 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case resumes at step 1.
 
-* 1c. User enters a name that already exists.
+* 1c. User enters details of a person that already exists.
   * 1c1. TuitionSync shows an error message.
 
     Use case resumes at step 1.
 
-* 1d. User enters a timeslot that is already occupied.
-  * 1d1. TuitionSync shows an error message.
+* 2a. Start time of tuition is equal to or after end time.
+  * 2a1. TuitionSync shows an error message.
+
+    Use case resumes at step 1.
+
+* 2b. Day and timeslot is already occupied.
+  * 2b1. TuitionSync shows an error message.
 
     Use case resumes at step 1.
 
@@ -273,10 +274,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  User requests to list tutees.
-2.  TuitionSync shows a list of tutees.
-3.  User requests to delete a specific tutee in the list.
-4.  TuitionSync deletes the tutee.
+1. User requests to list tutees.
+2. TuitionSync shows a list of tutees.
+3. User requests to delete a specific tutee in the list.
+4. TuitionSync deletes the tuition from schedule.
+5. TuitionSync deletes the tutee from address book.
 
     Use case ends.
 
@@ -292,7 +294,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes at step 2.
 
-**Use case: Add own schedule**
+**Use case: Add activity**
 
 **MSS**
 
@@ -308,8 +310,18 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case resumes at step 1.
 
-* 1b. User enters a timeslot that is already occupied.
+* 1b. User enters details of an activity that already exists.
   * 1b1. TuitionSync shows an error message.
+
+    Use case resumes at step 1.
+
+* 1c. User enters a timeslot where start time is equal to or after end time.
+  * 1c1. TuitionSync shows an error message.
+  
+    Use case resumes at step 1.
+
+* 1d. User enters a timeslot that is already occupied.
+  * 1d1. TuitionSync shows an error message.
 
     Use case resumes at step 1.
 
@@ -365,7 +377,7 @@ Assumption: User can already view the person that they wish to edit
 
 ### Glossary
 
-* **TutionSync**: An address book that caters towards private tution teachers who studies part-time, and helps them keep track of their contacts, schedule, and activity locations.
+* **TuitionSync**: An address book that caters towards private tuition teachers who studies part-time, and helps them keep track of their contacts, schedule, and activity locations.
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 
 --------------------------------------------------------------------------------------------------------------------
@@ -374,7 +386,9 @@ Assumption: User can already view the person that they wish to edit
 
 Given below are instructions to test the app manually.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** These instructions only provide a starting point for testers to work on;
+<div markdown="block" class="alert alert-info">
+
+:information_source: **Note:** These instructions only provide a starting point for testers to work on;
 testers are expected to do more *exploratory* testing.
 </div>
 
