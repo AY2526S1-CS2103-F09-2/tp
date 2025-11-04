@@ -49,13 +49,13 @@ deactivate AddressBookParser
 LogicManager -> DeleteCommand : execute(m)
 activate DeleteCommand
 
-DeleteCommand -> Model : deletePerson(1)
+DeleteCommand -> Model : deleteActivity(activity)
 activate Model
 
 Model --> DeleteCommand
 deactivate Model
 
-DeleteCommand -> Model : deleteActivity(activity)
+DeleteCommand -> Model : deletePerson(person)
 activate Model
 
 Model --> DeleteCommand
